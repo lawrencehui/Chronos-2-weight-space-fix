@@ -1,0 +1,8 @@
+captured 3988 windows in 63s
+held-out separation by layer: 0:0.36 1:0.40 2:0.42 3:0.43 4:0.43 5:0.43 6:0.43 7:0.44 8:0.44 9:0.45 10:0.46 11:0.46 12:0.47 13:0.53 14:0.52 15:0.55 16:0.60 17:0.60 18:0.63 19:0.58 20:0.66 21:0.68 22:0.66 23:0.64
+layer 20: top 64 writer neurons carry 54% of the positive write along u
+layer 21: top 64 writer neurons carry 58% of the positive write along u
+alpha=1 layers [20, 21] |dW|=9.90: CRPS x1.0132  MASE x1.0171  better 22 / worse 53 of 96
+   random control, same |dW|: CRPS x1.0000  MASE x1.0002  better 1 / worse 1 of 96
+alpha=4 layers [20, 21] |dW|=39.60: CRPS x1.1219  MASE x1.1352  better 12 / worse 79 of 96
+   random control, same |dW|: CRPS x1.0020  MASE x1.0030  better 8 / worse 22 of 96

@@ -1,0 +1,7 @@
+  CV lambda=0.001: g=0.25:x0.9994  g=0.5:x0.9992  g=1.0:x0.9994
+  CV lambda=0.01: g=0.25:x0.9994  g=0.5:x0.9993  g=1.0:x0.9995
+  CV lambda=0.1: g=0.25:x0.9994  g=0.5:x0.9993  g=1.0:x0.9995
+chosen lambda=0.001 gamma=0.5  |w|=0.138  b=-1.077
+FIT (in-sample): CRPS x0.9993  better 17 / worse 12 of 96  | median share below q90: 0.910 -> 0.884 (target 0.900)
+SELECT (held out): CRPS x0.9993  better 15 / worse 8 of 97  | median share below q90: 0.886 -> 0.857 (target 0.900)
+baked -> results/edit_q90.npz

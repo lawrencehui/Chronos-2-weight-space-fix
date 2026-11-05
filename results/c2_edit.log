@@ -1,0 +1,8 @@
+mapping check: max relative |loc + scale*sinh(raw) - forecast| = 6.76e-04
+  CV lambda=0.001: g=0.25:x0.9970  g=0.5:x1.0131  g=1.0:x1.0775
+  CV lambda=0.1: g=0.25:x1.0003  g=0.5:x1.0047  g=1.0:x1.0251
+chosen lambda=0.001 gamma=0.25
+FIT (in-sample): CRPS x0.9829  MASE x0.9879  better 61 / worse 16 of 96
+SELECT (held out): CRPS x0.9864  MASE x0.9984  better 34 / worse 27 of 97
+baked -> results/c2_edit.npz
+REAL edited model on SELECT: CRPS x0.9864  MASE x0.9979  better 34 / worse 27 of 97

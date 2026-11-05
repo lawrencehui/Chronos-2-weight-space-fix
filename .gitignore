@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/
+astra/
+results/*.pkl
+results/*.npz
+*_full.npz
+.DS_Store

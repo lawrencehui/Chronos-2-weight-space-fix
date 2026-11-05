@@ -1,0 +1,79 @@
+{
+ "budget": 50,
+ "passes_used": 11,
+ "final_used": true,
+ "log": [
+  {
+   "pass": 1,
+   "kind": "read",
+   "detail": "base blocks=[9, 10, 11] only=None",
+   "time": "16:01:25"
+  },
+  {
+   "pass": 2,
+   "kind": "forward",
+   "detail": "nanfix only=None",
+   "time": "16:11:45"
+  },
+  {
+   "pass": 3,
+   "kind": "forward",
+   "detail": "ctl_randwrite only=['electricity/H/long', 'bitbrains_rnd/5T', 'electricity/D/short', 'ett1/H/short']",
+   "time": "16:15:43"
+  },
+  {
+   "pass": 4,
+   "kind": "forward",
+   "detail": "nanfix_x0.5 only=['electricity/H/long', 'bitbrains_rnd/5T', 'electricity/D/short', 'ett1/H/short']",
+   "time": "16:15:48"
+  },
+  {
+   "pass": 5,
+   "kind": "forward",
+   "detail": "nanfix_x2.0 only=['electricity/H/long', 'bitbrains_rnd/5T', 'electricity/D/short', 'ett1/H/short']",
+   "time": "16:15:54"
+  },
+  {
+   "pass": 6,
+   "kind": "forward",
+   "detail": "ctl_randdet only=None",
+   "time": "16:16:15"
+  },
+  {
+   "pass": 7,
+   "kind": "read",
+   "detail": "nanfix blocks=[11] only=None",
+   "time": "16:18:56"
+  },
+  {
+   "pass": 8,
+   "kind": "forward",
+   "detail": "laser_b11wi_r278 only=None",
+   "time": "16:21:17"
+  },
+  {
+   "pass": 9,
+   "kind": "forward",
+   "detail": "laser_b11wo_r219 only=None",
+   "time": "16:21:45"
+  },
+  {
+   "pass": 10,
+   "kind": "forward",
+   "detail": "laser_b10wi_r496 only=None",
+   "time": "16:22:13"
+  },
+  {
+   "pass": 11,
+   "kind": "forward",
+   "detail": "laser_b10wi_r258 only=None",
+   "time": "16:23:07"
+  },
+  {
+   "pass": "final",
+   "kind": "final",
+   "detail": "nanfix",
+   "time": "16:24:07"
+  }
+ ]
+}

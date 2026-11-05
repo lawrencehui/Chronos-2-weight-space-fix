@@ -1,0 +1,9 @@
+mapping check: max relative |loc + scale*sinh(raw) - forecast| = 6.76e-04
+  CV lambda=0.0001: g=0.1:x0.9950  g=0.15:x0.9969  g=0.2:x1.0010  g=0.25:x1.0067  g=0.35:x1.0217
+  CV lambda=0.0003: g=0.1:x0.9946  g=0.15:x0.9948  g=0.2:x0.9966  g=0.25:x0.9997  g=0.35:x1.0090
+  CV lambda=0.001: g=0.1:x0.9959  g=0.15:x0.9954  g=0.2:x0.9958  g=0.25:x0.9970  g=0.35:x1.0016
+  CV lambda=0.003: g=0.1:x0.9974  g=0.15:x0.9970  g=0.2:x0.9970  g=0.25:x0.9974  g=0.35:x0.9997
+chosen lambda=0.0003 gamma=0.1
+FIT (in-sample): CRPS x0.9883  MASE x0.9929  better 60 / worse 6 of 96
+SELECT (held out): CRPS x0.9878  MASE x0.9985  better 30 / worse 12 of 97
+baked -> results/c2_edit_v2.npz

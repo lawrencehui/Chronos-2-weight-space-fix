@@ -1,0 +1,7 @@
+held-out separation by layer: 0:0.12 1:0.20 2:0.22 3:0.25 4:0.26 5:0.25 6:0.26 7:0.26 8:0.26 9:0.26 10:0.26 11:0.24 12:0.23 13:0.24 14:0.22 15:0.20 16:0.19 17:0.20 18:0.22 19:0.22 20:0.32 21:0.36 22:0.35 23:0.33
+layer 21: top 64 writer neurons carry 52% of the positive write along u
+layer 22: top 64 writer neurons carry 51% of the positive write along u
+alpha=0.5 layers [21, 22] |dW|=6.76: CRPS x1.0027  MASE x1.0028  better 26 / worse 32 of 96
+alpha=1 layers [21, 22] |dW|=13.51: CRPS x1.0120  MASE x1.0158  better 26 / worse 51 of 96
+alpha=2 layers [21, 22] |dW|=27.02: CRPS x1.0490  MASE x1.0635  better 19 / worse 65 of 96
+alpha=-1 layers [21, 22] |dW|=13.51: CRPS x1.0352  MASE x1.0309  better 10 / worse 68 of 96

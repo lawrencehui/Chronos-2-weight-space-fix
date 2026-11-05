@@ -1,0 +1,9 @@
+2-fold CV over configs within FIT (CRPS ratio):
+  lambda=0.0001: g=0.25:x1.0797  g=0.5:x1.2119  g=0.75:x1.3658  g=1.0:x1.5344
+  lambda=0.001: g=0.25:x1.0417  g=0.5:x1.1158  g=0.75:x1.2077  g=1.0:x1.3113
+  lambda=0.01: g=0.25:x1.0191  g=0.5:x1.0522  g=0.75:x1.0937  g=1.0:x1.1418
+  lambda=0.1: g=0.25:x1.0141  g=0.5:x1.0359  g=0.75:x1.0626  g=1.0:x1.0927
+chosen lambda=0.1 gamma=0.25  |w|=0.209 b=+0.3369
+FIT (in-sample):   CRPS x1.0113  MASE x1.0087  better 18 / worse 43 of 96
+SELECT (held out): CRPS x1.0147  MASE x1.0126  better 15 / worse 47 of 97
+baked -> results/edit_probe.npz  (rows [ 0 21 42]... of decoder.residual_layer)
