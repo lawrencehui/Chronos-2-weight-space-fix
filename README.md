@@ -10,6 +10,13 @@
   - **no task worse**;
   - leaderboard rank **#79 → #69** of 164.
 
+**Try the fixed model:** [lawrencehui/chronos-2-empty-history-fix](https://huggingface.co/lawrencehui/chronos-2-empty-history-fix) on Hugging Face. Load it the same way as `amazon/chronos-2`:
+
+```python
+from chronos import Chronos2Pipeline
+pipe = Chronos2Pipeline.from_pretrained("lawrencehui/chronos-2-empty-history-fix", device_map="cpu")
+```
+
 ---
 
 ## What is this model?
