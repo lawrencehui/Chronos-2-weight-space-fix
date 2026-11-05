@@ -4,7 +4,11 @@
 - We tried to improve a top open-source forecasting model **without retraining it**, by editing its internal numbers (its *weights*) directly.
 - Small, general tweaks did nothing: the model was already well tuned.
 - An AI agent then inspected the model and found a real **bug**: when a series has no recent data at all, the model predicts nonsense. The agent fixed it by rewiring **one unused neuron**, which changed **1,536 of the model's 120 million numbers**.
-- Result: **2.2% lower forecast error on held-out data, with no task getting worse.** The official test-set check is running now, and its numbers will be added here.
+- Result on the **official GIFT-Eval test set**:
+  - overall forecast error down 1.05%;
+  - up to **33% better** on the tasks the bug hit;
+  - **no task worse**;
+  - leaderboard rank **#79 → #69** of 164.
 
 ---
 
@@ -36,6 +40,8 @@ The idea comes from a blog post, [*Sparks of Weight Space Programming*](https://
 
 > When a series has **no data at all** in its recent history, the model panics and predicts nonsense, with ranges of **±200,000**.
 
+We reported it to the Chronos team, with a minimal reproduction: [amazon-science/chronos-forecasting#544](https://github.com/amazon-science/chronos-forecasting/issues/544).
+
 This happens in the **Bitbrains** data: real usage logs from a cloud-hosting company's servers. Servers get switched off and on, so sometimes a server has been off for its whole recent history and comes back on during the period being forecast. One absurd forecast like that ruins the score for the whole task.
 
 ## The fix: one neuron that was doing nothing
@@ -45,7 +51,7 @@ The agent noticed that one neuron in the model's last layer **never activated**:
 - **Its input side** (768 numbers) now detects *"this history is completely empty"*.
 - **Its output side** (768 numbers) then steers the forecast to *"calm, flat, close to zero"*.
 
-For every normal series the neuron stays silent, and **the model's output is exactly the same as before**. That's 1,536 numbers changed out of 120 million (0.001%).
+For every normal series the neuron stays silent, and **the model's output is exactly the same as before**. We tested where it switches on: with no real values, or just one (where the model has nothing to judge spread from), it fires; with two or more real values in the history, the forecast is bit-identical to the original model. That's 1,536 numbers changed out of 120 million (0.001%).
 
 ## Results
 
@@ -59,9 +65,28 @@ For every normal series the neuron stays silent, and **the model's output is exa
 
 **On the official GIFT-Eval test set:**
 
-*Running now.* Only 12 of the 97 test tasks contain a series with a completely empty history: the 8 Bitbrains tasks, 3 kdd_cup_2018 tasks and one window in electricity/W (`scan_empty_context.py`). The fix can only change those, so they are being re-scored with the edited model.
+Only 12 of the 97 test tasks contain a series whose history has at most one real value (`scan_empty_context.py`). The fix can only change those, so we re-ran those 12 with the edited model.
 
-*Projection from the held-out data, not yet a test result:* Chronos-2's leaderboard score would improve from 0.485 to about 0.475, roughly #79 → #59 of 163. This section will be updated with the real numbers.
+Error is measured by CRPS, which scores how good a forecast's *range* is (accurate and appropriately confident); lower is better.
+
+| Task | Original Chronos-2 | With the fix | Change |
+|---|---:|---:|---:|
+| bitbrains_rnd / 5-minute / medium | 1.0046 | 0.6700 | **−33.3%** |
+| bitbrains_rnd / 5-minute / long | 0.8730 | 0.6254 | **−28.4%** |
+| bitbrains_rnd / hourly / short | 0.8035 | 0.6702 | **−16.6%** |
+| bitbrains_fast_storage / 5-minute / long | 0.7026 | 0.6752 | −3.9% |
+| bitbrains_rnd / 5-minute / short | 0.4157 | 0.4033 | −3.0% |
+| bitbrains_fast_storage / 5-minute / medium | 0.6233 | 0.6107 | −2.0% |
+| bitbrains_fast_storage / hourly / short | 0.6635 | 0.6586 | −0.7% |
+| bitbrains_fast_storage / 5-minute / short | 0.3906 | 0.3899 | −0.2% |
+| electricity / weekly / short | 0.0559 | 0.0559 | 0.0% |
+| kdd_cup_2018 / hourly / short, medium, long | 0.3736 / 0.4172 / 0.4453 | 0.3736 / 0.4172 / 0.4453 | 0.0% |
+
+**Overall leaderboard score**, normalised CRPS across all 97 tasks: **0.4854 → 0.4803**. That moves the model from **#79 to #69 of 164** on GIFT-Eval. The middle forecast (MASE) is unchanged everywhere, at 0.6978: the fix only repairs the absurd ranges.
+
+Most of Chronos-2's gap to its peers on bitbrains_rnd turned out to be this bug. On the 5-minute medium task it scored 1.00, where comparable models score 0.55–0.62. With the fix it scores 0.67.
+
+The held-out data had suggested a bigger jump, to about #59. The test period simply contains fewer empty-history windows than the held-out period did.
 
 ## What we learned
 
@@ -71,8 +96,8 @@ For every normal series the neuron stays silent, and **the model's output is exa
 
 ## Honest caveats
 
-- **A simpler fix exists:** a one-line rule, "if the history is empty, forecast a flat line", would fix the same bug in code. The interesting part is that the agent **found** the bug from the model alone and fixed it **inside** the model.
-- **How the test score is computed:** the fix only changes forecasts whose history is completely empty. So the test check re-runs the 12 tasks that contain such cases and keeps the official scores for the other 85. We also re-run a few unaffected tasks to confirm the edited model gives them identical results.
+- **A simpler fix exists:** a one-line rule, "if the history is empty, forecast a flat line", would fix the same bug in code. That's what we suggested upstream in [#544](https://github.com/amazon-science/chronos-forecasting/issues/544). The interesting part is that the agent **found** the bug from the model alone and fixed it **inside** the model.
+- **How the test score was computed:** the fix only changes forecasts whose history has at most one real value. So we re-ran the 12 tasks that contain such cases and kept the official scores for the other 85. To confirm that's safe, we re-ran 7 unaffected tasks with the edited model, including multivariate ones. All 11 metrics matched the official scores to within 1.5 millionths (float rounding). Files: `results/nanfix_test_affected.csv`, `results/nanfix_test_unaffected_check.csv` and the merged `results/chronos2_nanfix_test_all_results.csv`.
 - **Size of the win:** this is a modest improvement to one model on one benchmark, not a new state of the art.
 
 ---
